@@ -7,11 +7,11 @@ This study covers the disk and server data measured and collected at a large dat
 
 <img src="figure/figure1.PNG" style="zoom:30%;" />
 
-​                              **Figure 1**: SMART attributes of healthy vs. failed disks prior to disk failures.
+<center>**Figure 1**: SMART attributes of healthy vs. failed disks prior to disk failures.</center>
 
 <img src="figure/figure2.PNG" style="zoom:30%;" />
 
-​                              **Figure 2**: Performance metrics of healthy vs. failed disks prior to disk failures.
+<center>**Figure 2**: Performance metrics of healthy vs. failed disks prior to disk failures.</center>
 
 We conducted a field study of HDDs based on a large-scale dataset collected from a leading ecommerce production data center, including SMART attributes, performance metrics, and location markers. We discover that performance metrics are good indicators of disk failures. We also found that location markers can improve the accuracy of disk failure prediction. Lastly, we trained machine learning models including neural network models to predict disk failures with 0.95 F-measure and 0.95MCC for 10 days prediction horizon.
 
