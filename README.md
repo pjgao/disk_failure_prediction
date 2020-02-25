@@ -5,15 +5,15 @@ This repository contains the code for the paper **Making Disk Failure Prediction
 
 This study covers the disk and server data measured and collected at a large data center. Over, the dataset spans over 64 data center sites, 10,000 server racks and 380,000  hard  disks  for  roughly  70  days.  This corresponds to roughly 2.6 million device hours. We note that during this period, the data center housed more than two million hard disks, but not all of them are included in our study because we only focus on those disks that have logged data in all three aspects: SMART,performance, and location. 
 
-<img src="figure/figure1.PNG" style="zoom:70%;" />
+<img src="figure/figure1.PNG" style="zoom:30%;" />
 
-<img src="figure/figure2.PNG" style="zoom:70%;" />
+<img src="figure/figure2.PNG" style="zoom:30%;" />
 
-<img src="figure/table1.PNG" style="zoom:70%;" />
+<img src="figure/table1.PNG" style="zoom:30%;" />
 
-<img src="figure/table2.PNG" style="zoom:70%;" />
+<img src="figure/table2.PNG" style="zoom:30%;" />
 
-<img src="figure/table3.PNG" style="zoom:70%;" />
+<img src="figure/table3.PNG" style="zoom:30%;" />
 
 ## Citation
 
