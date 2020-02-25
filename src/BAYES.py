@@ -35,35 +35,6 @@ def calMetrix(y_pre, test_y):
     MCC = (TP * TN - FP * FN) / np.sqrt(hh)
     print('MCC: ', MCC)
 
-####RandomForest regression####
-def random_forest_regressor(train_x, train_y):
-    from sklearn import ensemble
-    model_RandomForestRegressor = ensemble.RandomForestRegressor(n_estimators=2000)
-    # 2000 decision trees are used here
-    model_RandomForestRegressor.fit(train_x, train_y)
-    return model_RandomForestRegressor
-
-####RandomForest classification####
-def random_forest_classifier(train_x, train_y):
-    from sklearn import ensemble
-    model_RandomForestClassifier = ensemble.RandomForestClassifier(n_estimators=2000)
-    model_RandomForestClassifier.fit(train_x, train_y)
-    return model_RandomForestClassifier
-
-####GBDT regression####
-def gbdt_regressor(train_x, train_y):
-    from sklearn import ensemble
-    model_GradientBoostingRegressor = ensemble.GradientBoostingRegressor(n_estimators=1000)
-    model_GradientBoostingRegressor.fit(train_x, train_y)
-    return model_GradientBoostingRegressor
-
-####GBDT classification####
-def gbdt_classifier(train_x, train_y):
-    from sklearn import ensemble
-    model_GradientBoostingClassifier = ensemble.GradientBoostingClassifier(n_estimators=1000)
-    model_GradientBoostingClassifier.fit(train_x, train_y)
-    return model_GradientBoostingClassifier
-
 
 ####BAYES regression####
 def bayes_regressor(train_x, train_y):
@@ -87,13 +58,6 @@ def bayes_classifier(train_x, train_y):
     return model_BayesClassifier
 
 def read_data(group = 'SPL'):
-    # data = pd.read_csv(data_file)
-    # train = data[:int(len(data) * 0.9)]
-    # test = data[int(len(data) * 0.9):]
-    # train_y = train.MEDV
-    # train_x = train.drop('MEDV', axis=1)
-    # test_y = test.MEDV
-    # test_x = test.drop('MEDV', axis=1)
     X = np.load('../data/X_loc_0.25day.npy')
     y = np.load('../data/yNew_loc_0.25day.npy')
     forSOD = False
@@ -121,10 +85,6 @@ def read_data(group = 'SPL'):
     # **********************
     X = X.reshape(L, -1)
     y = y.reshape(L,)
-    # train_X = X[:int(L * 0.9)]
-    # train_y = y[:int(L * 0.9)]
-    # test_X = X[int(L * 0.9):]
-    # test_y = y[int(L * 0.9):]
     from sklearn.model_selection import KFold
     seed = 15
     np.random.seed(seed)
@@ -145,13 +105,8 @@ def model_fit(train_X, train_y, test_X, test_y):
     model_save_file = ''
     model_save = {}
 
-    # test_regressor = ['RF','GBDT']
-    test_regressor = ['BAYES','RF','GBDT']
-    # test_regressor = ['RF']
-    # test_regressor = ['RF','GBDT', 'BAYES']
+    test_regressor = ['BAYES']
     regressors = {
-                   'RF': random_forest_classifier,
-                   'GBDT': gbdt_classifier,
                    'BAYES': bayes_classifier,
                    }
     print('reading training and testing data...')

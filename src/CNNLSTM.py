@@ -1,24 +1,23 @@
-from keras.layers import Input, Dense, Dropout, Activation, LSTM
-from keras.layers import Convolution2D, MaxPooling2D, Flatten, Reshape
-from keras.layers import Convolution1D, MaxPooling1D
+from keras.layers import Dense, LSTM
+# from keras.layers import Input, Dropout, Activation
+# from keras.layers import Convolution2D, MaxPooling2D, Reshape
+from keras.layers import Convolution1D, MaxPooling1D, Flatten
 from keras.models import Sequential
 from keras.layers.wrappers import TimeDistributed
-from keras.layers.pooling import GlobalAveragePooling1D
-from keras.optimizers import SGD
-from keras.utils import np_utils
-from keras.models import Model
-# from cnn_lstm.DataProcess import DataProcess
-#from DataProcess import DataProcess
-from pandas import read_csv
 import numpy as np
-from matplotlib import pyplot as plt
-import random
+# from matplotlib import pyplot as plt
+# import random
 from sklearn import metrics
+import argparse
 
 pt = lambda s:print(type(s),s)
 
 nb_epoch = 100
+# number_of_batch = 100
 batch_size = 72
+# frame_row = 28
+# frame_col = 2
+# channels = 1
 output_dim = 1
 
 def classifyRes(arr):
@@ -28,7 +27,7 @@ def classifyRes(arr):
     return arr
 
 def calMetrix(y_pre, test_y):
-    print('*******************CNN-LSTM********************')
+    print('******************* CNN-LSTM********************')
     print('confusion_matrix:')
     confm = metrics.confusion_matrix(y_pre, test_y)
     print(confm)
@@ -37,17 +36,15 @@ def calMetrix(y_pre, test_y):
     print('precision_score: ')
     print(metrics.precision_score(y_pre, test_y))
     print('recall_score: ')
-    print(metrics.recall_score(y_pre, test_y, average='micro'))
+    print(metrics.recall_score(y_pre, test_y, average='binary'))
     print('f1_score: ')
     print(metrics.f1_score(y_pre, test_y))
-    TN, FP, FN, TP = confm[0,0], confm[0,1], confm[1,0], confm[1,1]
-    hh = (TP + FP) * (TP + FN) * (TN + FP) * (TN + FN)
-    MCC = (TP * TN - FP * FN) / np.sqrt(hh)
-    print('MCC: ', MCC)
 
-def read_data(group = 'SPL'):
-    X = np.load('../data/X_loc.npy')
-    y = np.load('../data/yNew_loc.npy')
+def read_data(xpath, ypath, group):
+    # X = np.load('../data/X_loc.npy')
+    # y = np.load('../data/yNew_loc.npy')
+    X = np.load(xpath)
+    y = np.load(ypath)
     L = X.shape[0]
     # **********************
     # smart: 0 - 12
@@ -73,17 +70,18 @@ def read_data(group = 'SPL'):
     # X = X.reshape(L, -1)
     y = y.reshape(L, -1)
     # ****************************
+
     from sklearn.model_selection import KFold
     seed = 15
     np.random.seed(seed)
     kfold = KFold(n_splits = 5, shuffle=True, random_state=seed)
-    print('******************* CNN-LSTM********************')
+
     for train_index, test_index in kfold.split(X, y):
         train_X, test_X = X[train_index], X[test_index]
         train_y, test_y = y[train_index], y[test_index]
         print(train_X.shape)
         model_fit(train_X, train_y, test_X, test_y)
-        #break
+        # break
 
     # ****************************
     # train_X = X[:int(L * 0.9)]
@@ -95,18 +93,15 @@ def read_data(group = 'SPL'):
     # return
 
 def model_fit(train_X, train_y, test_X, test_y):
-    # define CNN model
+    # define model
     model = Sequential()
     # model.add(TimeDistributed(cnn))
     model.add(TimeDistributed(Convolution1D(128, 4, border_mode='same'), input_shape=train_X.shape[1:]))
     model.add(TimeDistributed(MaxPooling1D(pool_size=2)))
     model.add(TimeDistributed(Flatten()))
-
-     # define LSTM model
     model.add(LSTM(128, return_sequences=True, name="lstm_layer0"))
     model.add(LSTM(128, return_sequences=False, name="lstm_layer1"))
     # model.add(LSTM(100, return_sequences=True, name="lstm_layer2"))
-
     model.add(Dense(output_dim, activation='sigmoid'))
     # model.add(GlobalAveragePooling1D(name="global_avg"))
 
@@ -114,7 +109,7 @@ def model_fit(train_X, train_y, test_X, test_y):
                   optimizer='adam',
                   metrics=['accuracy'])
     # %%
-    model.fit(train_X, train_y,batch_size=batch_size, nb_epoch=nb_epoch, verbose = 0, validation_data=(test_X, test_y))
+    model.fit(train_X, train_y,batch_size=batch_size, nb_epoch=nb_epoch, verbose=0, validation_data=(test_X, test_y))
 
     test_y = test_y.reshape(test_y.size, 1)
     predict_y = model.predict(test_X)
@@ -129,5 +124,14 @@ def model_fit(train_X, train_y, test_X, test_y):
     # plt.grid()
     # plt.show()
 
+def parse_args():
+    parser = argparse.ArgumentParser(description="train data path")
+    parser.add_argument("--xpath", help="Xdata Path", default='', type=str,  required=True)
+    parser.add_argument("--ypath", help="ydata Path", default='', type=str, required=True)
+    parser.add_argument("--group", help="group", default='', type=str, required=True)
+    return parser.parse_args()
+
 if __name__ == '__main__':
-    read_data('P')
+    args = parse_args()
+    read_data(args.xpath, args.ypath, args.group)
+    # python3 CNNLSTM_args.py --xpath X1_10days.npy --ypath y1_10days.npy --group SPL

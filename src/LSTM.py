@@ -153,9 +153,10 @@ def parse_args():
     parser = argparse.ArgumentParser(description="train data path")
     parser.add_argument("--xpath", help="Xdata Path", default='', type=str,  required=True)
     parser.add_argument("--ypath", help="ydata Path", default='', type=str, required=True)
+    parser.add_argument("--group", help="group", default='', type=str, required=True)
     return parser.parse_args()
 
 if __name__ == '__main__':
     args = parse_args()
-    read_data(args.xpath, args.ypath)
+    read_data(args.xpath, args.ypath, args.group)
 
