@@ -15,6 +15,14 @@ This study covers the disk and server data measured and collected at a large dat
 
 We conducted a field study of HDDs based on a large-scale dataset collected from a leading ecommerce production data center, including SMART attributes, performance metrics, and location markers. We discover that performance metrics are good indicators of disk failures. We also found that location markers can improve the accuracy of disk failure prediction. Lastly, we trained machine learning models including neural network models to predict disk failures with 0.95 F-measure and 0.95 MCC for 10 days prediction horizon.
 
+<img src="figure/figure3.PNG" style="zoom:30%;" />
+
+**Figure 3**: Model prediction quality with different groups of SMART (S), performance (P), and location (L) features.
+
+<img src="figure/figure4.PNG" style="zoom:30%;" />
+
+**Figure 4**: Model false positive rate (FPR = FP/(FP + TN)) and false negative rate (FNR = FN/(TP + FN)).
+
 ## Citation
 
 ```
