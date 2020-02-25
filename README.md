@@ -9,12 +9,6 @@ This study covers the disk and server data measured and collected at a large dat
 
 <img src="figure/figure2.PNG" style="zoom:30%;" />
 
-<img src="figure/table1.PNG" style="zoom:30%;" />
-
-<img src="figure/table2.PNG" style="zoom:30%;" />
-
-<img src="figure/table3.PNG" style="zoom:30%;" />
-
 ## Citation
 
 ```
