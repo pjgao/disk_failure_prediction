@@ -7,7 +7,11 @@ This study covers the disk and server data measured and collected at a large dat
 
 <img src="figure/figure1.PNG" style="zoom:30%;" />
 
+​                              Figure 1: SMART attributes of healthy vs. failed disks prior to disk failures.
+
 <img src="figure/figure2.PNG" style="zoom:30%;" />
+
+​                              Figure 2: Performance metrics of healthy vs. failed disks prior to disk failures.
 
 ## Citation
 
