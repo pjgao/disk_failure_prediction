@@ -4,11 +4,11 @@ from keras.layers import Dense, LSTM
 from keras.layers import Convolution1D, MaxPooling1D, Flatten
 from keras.models import Sequential
 from keras.layers.wrappers import TimeDistributed
-import numpy as np
 # from matplotlib import pyplot as plt
 # import random
-from sklearn import metrics
 import argparse
+from utils.loadData import read_data
+from utils.evaluation import calMetrix
 
 pt = lambda s:print(type(s),s)
 
@@ -25,72 +25,6 @@ def classifyRes(arr):
     for i in range(arr.size):
         arr[i] = 1 if arr[i]>0.5 else 0
     return arr
-
-def calMetrix(y_pre, test_y):
-    print('******************* CNN-LSTM********************')
-    print('confusion_matrix:')
-    confm = metrics.confusion_matrix(y_pre, test_y)
-    print(confm)
-    print('accuracy_score: ')
-    print(metrics.accuracy_score(y_pre, test_y))
-    print('precision_score: ')
-    print(metrics.precision_score(y_pre, test_y))
-    print('recall_score: ')
-    print(metrics.recall_score(y_pre, test_y, average='binary'))
-    print('f1_score: ')
-    print(metrics.f1_score(y_pre, test_y))
-
-def read_data(xpath, ypath, group):
-    # X = np.load('../data/X_loc.npy')
-    # y = np.load('../data/yNew_loc.npy')
-    X = np.load(xpath)
-    y = np.load(ypath)
-    L = X.shape[0]
-    # **********************
-    # smart: 0 - 12
-    # perf: 13 - 92
-    # loc: 93
-    Loc = [93]
-    Sgroup = [i for i in range(12)]
-    Pgroup = [i for i in range(13, 93)]
-    groups = {
-        'S': Sgroup,
-        'P': Pgroup,
-        'SL': Sgroup + Loc,
-        'PL': Pgroup + Loc,
-        'SP': Sgroup + Pgroup,
-        'SPL': Sgroup + Pgroup + Loc,
-    }
-    assert group in groups
-    useGroup = groups[group]
-    X = X[:, :, useGroup]
-    m,n,p = X.shape
-    X = X.reshape(m,n,p,1)
-    # **********************
-    # X = X.reshape(L, -1)
-    y = y.reshape(L, -1)
-    # ****************************
-
-    from sklearn.model_selection import KFold
-    seed = 15
-    np.random.seed(seed)
-    kfold = KFold(n_splits = 5, shuffle=True, random_state=seed)
-
-    for train_index, test_index in kfold.split(X, y):
-        train_X, test_X = X[train_index], X[test_index]
-        train_y, test_y = y[train_index], y[test_index]
-        print(train_X.shape)
-        model_fit(train_X, train_y, test_X, test_y)
-        # break
-
-    # ****************************
-    # train_X = X[:int(L * 0.9)]
-    # train_y = y[:int(L * 0.9)]
-    # test_X = X[int(L * 0.9):]
-    # test_y = y[int(L * 0.9):]
-    # print(train_X.shape, train_y.shape, test_X.shape, test_y.shape)
-
-    # return
 
 def model_fit(train_X, train_y, test_X, test_y):
     # define model
@@ -115,7 +49,7 @@ def model_fit(train_X, train_y, test_X, test_y):
     predict_y = model.predict(test_X)
     predict_y = predict_y.reshape(predict_y.size, 1)
     predict_y = classifyRes(predict_y)
-    calMetrix(predict_y, test_y)
+    calMetrix(__file__, predict_y, test_y)
     model.save('../model/CNN_LSTM_model.h5')
 
     # plt.plot(y_predict, 'r',label='forecast')
