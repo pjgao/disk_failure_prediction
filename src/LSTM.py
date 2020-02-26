@@ -6,6 +6,7 @@ import numpy as np
 import argparse
 from utils.loadData import read_data
 from utils.evaluation import calMetrix
+import time
 
 def classifyRes(arr):
     arr = arr.reshape(arr.size,)
@@ -64,8 +65,8 @@ def model_fit(train_X, train_y, test_X, test_y):
     # plt.clf()
     np.savetxt('loss.csv', history.history['loss'])
     np.savetxt('val_loss.csv', history.history['val_loss'])
-
-    model.save('../model/LSTM_model.h5')
+    t0 = time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
+    model.save('../model/LSTM_model_%s.h5'%t0)
 
     # make a prediction
     y_pre = model.predict(test_X)
@@ -98,5 +99,6 @@ def parse_args():
 
 if __name__ == '__main__':
     args = parse_args()
-    read_data(args.xpath, args.ypath, args.group)
+    for train_X, train_y, test_X, test_y in read_data(args.xpath, args.ypath, args.group):
+        model_fit(train_X, train_y, test_X, test_y)
 

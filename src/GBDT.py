@@ -70,4 +70,5 @@ def parse_args():
 
 if __name__ == '__main__':
     args = parse_args()
-    read_data(args.xpath, args.ypath, args.group)
+    for train_X, train_y, test_X, test_y in read_data(args.xpath, args.ypath, args.group):
+        model_fit(train_X, train_y, test_X, test_y)

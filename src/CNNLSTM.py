@@ -9,6 +9,7 @@ from keras.layers.wrappers import TimeDistributed
 import argparse
 from utils.loadData import read_data
 from utils.evaluation import calMetrix
+import time
 
 pt = lambda s:print(type(s),s)
 
@@ -50,7 +51,8 @@ def model_fit(train_X, train_y, test_X, test_y):
     predict_y = predict_y.reshape(predict_y.size, 1)
     predict_y = classifyRes(predict_y)
     calMetrix(__file__, predict_y, test_y)
-    model.save('../model/CNN_LSTM_model.h5')
+    t0 = time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
+    model.save('../model/CNN_LSTM_model_%s.h5'%t0)
 
     # plt.plot(y_predict, 'r',label='forecast')
     # plt.plot(y_test, 'b',label='actual')
@@ -67,5 +69,6 @@ def parse_args():
 
 if __name__ == '__main__':
     args = parse_args()
-    read_data(args.xpath, args.ypath, args.group)
+    for train_X, train_y, test_X, test_y in read_data(args.xpath, args.ypath, args.group):
+        model_fit(train_X, train_y, test_X, test_y)
     # python3 CNNLSTM_args.py --xpath X1_10days.npy --ypath y1_10days.npy --group SPL
