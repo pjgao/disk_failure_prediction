@@ -25,11 +25,11 @@ We conducted a field study of HDDs based on a large-scale dataset collected from
 
 ## Training Model
 
-- [CNN-LSTM](#https://github.com/SidiLu001/disk_failure_prediction/tree/master/src)
-- [LSTM](#https://github.com/SidiLu001/disk_failure_prediction/tree/master/src)
-- [RF](#https://github.com/SidiLu001/disk_failure_prediction/tree/master/src)
-- [GBDT](#https://github.com/SidiLu001/disk_failure_prediction/tree/master/src)
-- [BAYES](#https://github.com/SidiLu001/disk_failure_prediction/tree/master/src)
+- [CNN-LSTM](https://github.com/SidiLu001/disk_failure_prediction/tree/master/src)
+- [LSTM](https://github.com/SidiLu001/disk_failure_prediction/tree/master/src)
+- [RF](https://github.com/SidiLu001/disk_failure_prediction/tree/master/src)
+- [GBDT](https://github.com/SidiLu001/disk_failure_prediction/tree/master/src)
+- [BAYES](https://github.com/SidiLu001/disk_failure_prediction/tree/master/src)
 
 ## Citation
 
