@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import time
+import pickle
 import warnings
 import argparse
 from utils.loadData import read_data
@@ -52,6 +53,8 @@ def model_fit(train_X, train_y, test_X, test_y):
         start_time = time.time()
         model = regressors[regressor](train_X, train_y)
         print('training took %fs!' % (time.time() - start_time))
+        t0 = time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
+        pickle.dump(model, open('../model/RandomForest_model_%s.h5' % t0, 'wb'))
         predict = model.predict(test_X)
         # print('test_y: {}\npredict: {}'.format(test_y, predict))
         # score = model.score(test_x, test_y)
